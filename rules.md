@@ -45,3 +45,22 @@
       - maybe undigestable
     - earth material:
       - easy to eat, now nutrients
+
+# new
+- they can learn and give their behavior slightly mutated to their children
+- attributes:
+  - speed
+  - willingness to move
+  - square preference
+    - tree
+    - soil
+    - ...
+    - (at some point a family of tree and soil lovers might emerge gathering wood)
+- stats:
+  - hp
+  - age
+  - wood
+- behavior shapers:
+  - want to: live
+  - wood
+  -

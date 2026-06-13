@@ -15,9 +15,14 @@ uint64_t hash64(uint64_t x)
     return x;
 }
 
+float hash64_angle(int x, int y, int seed)
+{
+    return (float)hash64(hash64(x*2027) ^ hash64(y*15101) ^ hash64(seed))/UINT64_MAX * (2.0f*PI);
+}
+
 float dot_product(float a, float b_x, float b_y)
 {
-    return (b_x*cos(a) + b_y*sin(a));
+    return b_x*cos(a) + b_y*sin(a);
 }
 
 float fade(float t)
@@ -30,11 +35,6 @@ float fade(float t)
 float lerp(float a, float b, float t)
 {
     return a + t*(b-a);
-}
-
-float hash64_angle(int x, int y, int seed)
-{
-    return (float)hash64((hash64(x*2027) ^ hash64(y*15101)) ^ hash64(seed))/UINT64_MAX * (2.0f*PI);
 }
 
 float noise_perlin_unit(int x, int y, int seed, int lattice_unit)
@@ -68,12 +68,18 @@ float noise_perlin_unit(int x, int y, int seed, int lattice_unit)
 
 float noise_perlin(int x, int y, int seed)
 {
-    return
-          0.20 * noise_perlin_unit(x, y, seed, 800)
-        + 0.80 * noise_perlin_unit(x, y, seed, 400)
-        + 0.30 * noise_perlin_unit(x, y, seed, 200)
-        + 0.20 * noise_perlin_unit(x, y, seed, 100)
-        + 0.15 * noise_perlin_unit(x, y, seed, 50)
+    const float res =
+          0.15 * noise_perlin_unit(x, y, seed, 800)
+        + 0.30 * noise_perlin_unit(x, y, seed, 400)
+        + 0.25 * noise_perlin_unit(x, y, seed, 200)
+        + 0.15 * noise_perlin_unit(x, y, seed, 100)
+        + 0.10 * noise_perlin_unit(x, y, seed, 50)
         + 0.05 * noise_perlin_unit(x, y, seed, 25);
+    return 1.0 - (
+        (res <= 0.0f)
+            ? 0.0f
+            : (res >= 1.0f)
+                ? 1.0f
+                : res);
 }
 
