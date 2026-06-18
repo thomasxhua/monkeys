@@ -33,12 +33,20 @@
         assert(arr->data != NULL); \
         arr->capacity = capacity; \
     } \
-    static inline void prefix##_append(name* arr, type val) \
+    static inline type* prefix##_append(name* arr, type val) \
     { \
         assert(arr != NULL); \
         while (arr->size >= arr->capacity) \
             prefix##_realloc(arr, arr->capacity * 2); \
         arr->data[arr->size++] = val; \
+        return &arr->data[arr->size-1]; \
+    } \
+    static inline void prefix##_remove_unordered(name* arr, size_t idx) \
+    { \
+        assert(arr != NULL); \
+        if (idx >= arr->size) \
+            return; \
+        arr->data[idx] = arr->data[--arr->size]; \
     }
 
 // DEFINE_DYN_ARRAY(char, DynArrayChar, dyn_array_char)
