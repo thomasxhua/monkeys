@@ -107,8 +107,14 @@ void world_tick(
                 }
             }
             // birth children?
-            if (   monkey->age       >= MONKEY_AGE_ADULT
-                && other_monkey->age >= MONKEY_AGE_ADULT
+            if (true
+                // adults
+                && MONKEY_AGE_ADULT <= monkey->age       && monkey->age       < MONKEY_AGE_OLD
+                && MONKEY_AGE_ADULT <= other_monkey->age && other_monkey->age < MONKEY_AGE_OLD
+                // less than max children
+                && monkey->count_child       < MONKEY_COUNT_CHILD_MAX
+                && other_monkey->count_child < MONKEY_COUNT_CHILD_MAX
+                // are in birthing range
                 && monkey->pos_x == other_monkey->pos_x
                 && monkey->pos_y == other_monkey->pos_y)
             {
@@ -116,6 +122,8 @@ void world_tick(
                 baby_monkey->pos_x  = monkey->pos_x;
                 baby_monkey->pos_y  = monkey->pos_y;
                 baby_monkey->dna    = dna_combine(&monkey->dna, &other_monkey->dna);
+                ++monkey->count_child;
+                ++other_monkey->count_child;
                 if (count_newborn)
                     ++(*count_newborn);
             }

@@ -11,6 +11,8 @@
 #define MONKEY_AGE_OLD   800
 #define MONKEY_PROBABILITY_DYING_FROM_OLD_AGE 0.01f
 
+#define MONKEY_COUNT_CHILD_MAX 4
+
 typedef struct
 {
     float move_probability;
@@ -29,6 +31,7 @@ typedef struct
     // stats (current state)
     int pos_x, pos_y;
     int age;
+    int count_child;
     // ... hp ...
     DNA dna;
 } Monkey;
